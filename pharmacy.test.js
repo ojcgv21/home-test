@@ -27,14 +27,18 @@ describe("Pharmacy", () => {
       new Drug("Other", -20, 10),
       new Drug("Other", 0, 10),
       new Drug("Herbal Tea", -10, 20),
-      new Drug("Herbal Tea", 0, 15)
+      new Drug("Herbal Tea", 0, 15),
+      new Drug("Dafalgan", -20, 13),
+      new Drug("Dafalgan", 0, 10)
     ];
     const deltasDrugsExpired = computeDeltasBenefit(drugsExpired);
     const drugsNotExpired = [
       new Drug("Other", 15, 8),
       new Drug("Other", 14, 8),
       new Drug("Herbal Tea", 11, 22),
-      new Drug("Herbal Tea", 1, 17)
+      new Drug("Herbal Tea", 1, 17),
+      new Drug("Dafalgan", 21, 9),
+      new Drug("Dafalgan", 1, 6)
     ];
     const deltasDrugsNotExpired = computeDeltasBenefit(drugsNotExpired);
     expect(deltasDrugsExpired).toEqual(deltasDrugsNotExpired.map(e => 2 * e));
@@ -45,7 +49,8 @@ describe("Pharmacy", () => {
       new Drug("Herbal Tea", -10, 0),
       new Drug("Magic Pill", 0, 0),
       new Drug("Fervex", -12, 0),
-      new Drug("Other", -13, 0)
+      new Drug("Other", -13, 0),
+      new Drug("Dafalgan", -15, 0)
     ];
     const benefits = extractBenefits(updateBenefit(drugsZeroBen));
     expect(benefits.every(e => e >= 0)).toEqual(true);
@@ -98,4 +103,18 @@ describe("Pharmacy", () => {
       expect(updateBenefit(fervexs)).toEqual(fervexsAfterOneDay);
     }
   );
+
+  it('"Dafalgan" degrades in Benefit twice as fast as normal drugs', () => {
+    const dafalgans = [
+      new Drug("Dafalgan", 10, 20),
+      new Drug("Dafalgan", -5, 30)
+    ];
+    const deltasDafalgans = computeDeltasBenefit(dafalgans);
+    const normalDrugs = [
+      new Drug("Cocaine", 10, 22),
+      new Drug("Marihuana", -5, 32)
+    ];
+    const deltasNormalDrugs = computeDeltasBenefit(normalDrugs);
+    expect(deltasDafalgans).toEqual(deltasNormalDrugs.map(e => 2 * e));
+  });
 });
