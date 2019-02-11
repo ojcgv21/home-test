@@ -50,6 +50,9 @@ const computeBenefitUpdate = drug => {
     case "Fervex":
       deltaBenefit = computeBenefitUpdateFervex(drug);
       break;
+    case "Dafalgan":
+      deltaBenefit = -2;
+      break;
     default:
       break;
   }
